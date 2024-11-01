@@ -5,6 +5,18 @@ import torch
 import torch.nn.functional as F
 from matplotlib.path import Path
 
+def resize_image_to_match(img_to_resize, target_img):
+    """
+    Resizes the given image to match the dimensions of the target image.
+
+    Args:
+        img_to_resize (PIL.Image): The image to resize.
+        target_img (PIL.Image): The target image with the desired dimensions.
+
+    Returns:
+        PIL.Image: The resized image.
+    """
+    return img_to_resize.resize(target_img.size, Image.LANCZOS)
 
 # Initialize the polygon state
 def initialize_polygon():
@@ -160,6 +172,9 @@ def blending(foreground_image_original, background_image_original, dx, dy, polyg
     if not polygon_state['closed'] or background_image_original is None or foreground_image_original is None:
         return background_image_original  # Return original background if conditions are not met
 
+    if foreground_image_original.size != background_image_original.size:
+        foreground_image_original = resize_image_to_match(foreground_image_original, background_image_original)
+
     # Convert images to numpy arrays
     foreground_np = np.array(foreground_image_original)
     background_np = np.array(background_image_original)
@@ -189,7 +204,7 @@ def blending(foreground_image_original, background_image_original, dx, dy, polyg
     optimizer = torch.optim.Adam([blended_img], lr=1e-3)
 
     # Optimization loop
-    iter_num = 10000
+    iter_num = 5000
     for step in range(iter_num):
         blended_img_for_loss = blended_img.detach() * (1. - bg_mask_tensor) + blended_img * bg_mask_tensor  # Only blending in the mask region?
 
