@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from facades_dataset import FacadesDataset
-from FCN_network import FullyConvNetwork
+from FCN_network import FullyConvNetwork, FCN8s
 from torch.optim.lr_scheduler import StepLR
 
 def tensor_to_image(tensor):
@@ -145,19 +145,21 @@ def main():
     train_dataset = FacadesDataset(list_file='train_list.txt')
     val_dataset = FacadesDataset(list_file='val_list.txt')
 
-    train_loader = DataLoader(train_dataset, batch_size=100, shuffle=True, num_workers=4)
-    val_loader = DataLoader(val_dataset, batch_size=100, shuffle=False, num_workers=4)
+    #fcn batch_size取100， fcn8s batch_size取30
+    train_loader = DataLoader(train_dataset, batch_size=30, shuffle=True, num_workers=4)
+    val_loader = DataLoader(val_dataset, batch_size=30, shuffle=False, num_workers=4)
 
     # Initialize model, loss function, and optimizer
-    model = FullyConvNetwork().to(device)
+    #model = FullyConvNetwork().to(device)
+    model = FCN8s(num_classes=34).to(device)
     criterion = nn.L1Loss()
     optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.5, 0.999))
 
     # Add a learning rate scheduler for decay
-    scheduler = StepLR(optimizer, step_size=200, gamma=0.2)
+    scheduler = StepLR(optimizer, step_size=20, gamma=0.5)
 
     # Training loop
-    num_epochs = 800
+    num_epochs = 100
     for epoch in range(num_epochs):
         train_one_epoch(model, train_loader, optimizer, criterion, device, epoch, num_epochs)
         validate(model, val_loader, criterion, device, epoch, num_epochs)
@@ -167,7 +169,7 @@ def main():
 
         # Save model checkpoint every 20 epochs
         if (epoch + 1) % 20 == 0:
-            os.makedirs('checkpoints', exist_ok=True)
+            os.makedirs('checkpoints/city1', exist_ok=True)
             torch.save(model.state_dict(), f'checkpoints/pix2pix_model_epoch_{epoch + 1}.pth')
 
 if __name__ == '__main__':

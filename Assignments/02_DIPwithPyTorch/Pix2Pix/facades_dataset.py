@@ -21,7 +21,7 @@ class FacadesDataset(Dataset):
         img_name = self.image_filenames[idx]
         img_color_semantic = cv2.imread(img_name)
         # Convert the image to a PyTorch tensor
-        image = torch.from_numpy(img_color_semantic).permute(2, 0, 1).float()/255.0 * 2.0 -1.0
+        image = torch.from_numpy(img_color_semantic).permute(2, 0, 1).float()/255.0 * 2 -1.0
         image_rgb = image[:, :, :256]
         image_semantic = image[:, :, 256:]
         return image_rgb, image_semantic
