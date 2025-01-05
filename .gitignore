@@ -4,3 +4,9 @@ Assignments/02_DIPwithPyTorch/Pix2Pix/datasets/
 Assignments/02_DIPwithPyTorch/Pix2Pix/train_results/
 Assignments/02_DIPwithPyTorch/Pix2Pix/val_results/
 Assignments/03_PlayWithGANs/DragGAN/checkpoints/
+Assignments/04_3DGS/data/lego/checkpoints/debug_images/
+Assignments/04_3DGS/data/chair/checkpoints/debug_images/
+Assignments/04_3DGS/data/lego/images/
+Assignments/04_3DGS/data/chair/images/
+Assignments/04_3DGS/data/lego/projections/
+Assignments/04_3DGS/data/chair/projections/
