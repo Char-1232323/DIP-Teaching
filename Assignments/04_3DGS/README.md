@@ -75,12 +75,8 @@ Since we use a pure PyTorch implementation, the training speed and GPU memory us
 
 ### results
 
-<video width="640" height="360" controls>
-  <source src="./data/chair/checkpoints/debug_rendering.mp4" type="mp4">
-  Your browser does not support the video tag.
-</video>
+![chair](./output/chair.gif)
 
-<video width="640" height="360" controls>
-  <source src="./data/lego/checkpoints/debug_rendering.mp4" type="mp4">
-  Your browser does not support the video tag.
-</video>
+![lego](./output/lego.gif)
+
+chair有一个视角没有训练出来不知道是为什么
